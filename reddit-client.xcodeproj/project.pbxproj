@@ -409,6 +409,7 @@
 				E48180ED1B518A3D006A90D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E48180EE1B518A3D006A90D5 /* Build configuration list for PBXNativeTarget "reddit-clientTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +418,7 @@
 				E48180F01B518A3D006A90D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

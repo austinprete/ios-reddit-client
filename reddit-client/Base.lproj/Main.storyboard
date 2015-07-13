@@ -1,25 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="15A215h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="B4X-5b-dcW">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="ufC-wZ-h7g">
+        <scene sceneID="t2d-XC-xtO">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="B4X-5b-dcW" customClass="ViewController" customModule="reddit_client" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                        <viewControllerLayoutGuide type="top" id="qt6-Cp-2tU"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ien-VF-i1Z"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                    <view key="view" contentMode="scaleToFill" id="JoS-er-hZb">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EzL-bs-pFR">
+                                <rect key="frame" x="0.0" y="66" width="600" height="534"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWo-aP-C9p">
+                                <rect key="frame" x="199" y="28" width="203" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="203" id="Wp8-4A-JuZ"/>
+                                </constraints>
+                                <state key="normal" title="Authenticate with Reddit">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleAuthenticateButtonPressed:" destination="B4X-5b-dcW" eventType="touchUpInside" id="BHw-OB-s9V"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="EzL-bs-pFR" firstAttribute="top" secondItem="aWo-aP-C9p" secondAttribute="bottom" constant="8" id="Lp9-BQ-kkp"/>
+                            <constraint firstAttribute="centerX" secondItem="aWo-aP-C9p" secondAttribute="centerX" id="NV9-bn-3A3"/>
+                            <constraint firstItem="Ien-VF-i1Z" firstAttribute="top" secondItem="EzL-bs-pFR" secondAttribute="bottom" id="Opx-UU-59U"/>
+                            <constraint firstItem="EzL-bs-pFR" firstAttribute="leading" secondItem="JoS-er-hZb" secondAttribute="leading" id="WbL-m5-evf"/>
+                            <constraint firstItem="aWo-aP-C9p" firstAttribute="top" secondItem="qt6-Cp-2tU" secondAttribute="bottom" constant="8" id="ZIx-nJ-pg5"/>
+                            <constraint firstItem="EzL-bs-pFR" firstAttribute="centerX" secondItem="aWo-aP-C9p" secondAttribute="centerX" id="i8h-YO-G6y"/>
+                            <constraint firstItem="aWo-aP-C9p" firstAttribute="top" secondItem="qt6-Cp-2tU" secondAttribute="bottom" constant="57" id="k4m-E7-YfH"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="k4m-E7-YfH"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="authenticateWebView" destination="EzL-bs-pFR" id="Dke-xv-CgE"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Opp-X1-q6v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="704" y="-202"/>
         </scene>
     </scenes>
 </document>
