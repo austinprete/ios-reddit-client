@@ -19,7 +19,7 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
     var subredditDescription : String = ""
     var authCode : String = ""
     
-    var subredditPosts : [(title: String, author: String, upvotes: Int, downvotes: Int)] = []
+    var subredditPosts : [(title: String, author: String, upvotes: Int, downvotes: Int, id: String)] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,9 +50,9 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var postCell = self.tableView.dequeueReusableCellWithIdentifier("postCell") as! PostCell
-        postCell.postTitleLabel?.text = self.subredditPosts[indexPath.row].0
-        let upvotes = self.subredditPosts[indexPath.row].2
-        let downvotes = self.subredditPosts[indexPath.row].3
+        postCell.postTitleLabel?.text = self.subredditPosts[indexPath.row].title
+        let upvotes = self.subredditPosts[indexPath.row].upvotes
+        let downvotes = self.subredditPosts[indexPath.row].downvotes
         postCell.postKarmaLabel?.text = "Up: \(upvotes) Down: \(downvotes)"
         postCell.postAuthorLabel?.text = self.subredditPosts[indexPath.row].1
         return postCell
@@ -71,12 +71,12 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
                 for post in postsArray {
                     let post = post as! NSDictionary
                     let data = post["data"] as! NSDictionary
-                    println(data)
                     let title = data["title"] as! String
                     let upvotes = data["ups"] as! Int
                     let downvotes = data["downs"] as! Int
                     let author = data["author"] as! String
-                    subredditPosts.append((title: title, author: author, upvotes: upvotes, downvotes: downvotes))
+                    let id = data["name"] as! String
+                    subredditPosts.append((title: title, author: author, upvotes: upvotes, downvotes: downvotes, id: id))
                 }
                 dispatch_async(dispatch_get_main_queue(), {
                     self.tableView.reloadData()
@@ -102,6 +102,17 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
         overlay?.addSubview(overlay_label)
         
         self.view.addSubview(overlay!)
+    }
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowPostDetails" {
+            if let postVC = segue.destinationViewController as? PostViewController {
+                let row = self.tableView!.indexPathForSelectedRow()!.row
+                postVC.authCode = self.authCode
+                postVC.postID = self.subredditPosts[row].id
+            }
+        }
     }
 
     /*

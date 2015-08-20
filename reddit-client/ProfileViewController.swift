@@ -19,6 +19,7 @@ class ProfileViewController: UIViewController, RedditAPIRequestDelegate, UITable
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        subreddits = []
         getProfileInfo()
     }
     
