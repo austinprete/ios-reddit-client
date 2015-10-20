@@ -32,14 +32,14 @@ class ProfileViewController: UIViewController, RedditAPIRequestDelegate, UITable
         if let request = request {
             var queryStrings = [String: String]()
             if let query = request.URL?.fragment as String! {
-                println (query)
+                print (query)
                 for qs in query.componentsSeparatedByString("&") {
                     // Get the parameter name
                     let key = qs.componentsSeparatedByString("=")[0]
                     // Get the parameter name
                     var value = qs.componentsSeparatedByString("=")[1]
                     value = value.stringByReplacingOccurrencesOfString("+", withString: " ")
-                    value = value.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                    value = value.stringByRemovingPercentEncoding!
                     
                     queryStrings[key] = value
                 }
@@ -63,13 +63,12 @@ class ProfileViewController: UIViewController, RedditAPIRequestDelegate, UITable
         if error != nil {
             return
         }
-        var err: NSError?
-        var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+        let jsonResult = (try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
         dispatch_async(dispatch_get_main_queue(), {
             
             if let jsonDict = jsonResult as? [String: AnyObject] {
                 if let rootDict = jsonDict["data"] as? [String: AnyObject] {
-                    var subredditsArray = rootDict["children"] as! NSArray
+                    let subredditsArray = rootDict["children"] as! NSArray
                     for subreddit in subredditsArray {
                         let subreddit = subreddit as! NSDictionary
                         let data = subreddit["data"] as! NSDictionary
@@ -98,7 +97,7 @@ class ProfileViewController: UIViewController, RedditAPIRequestDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:SubredditCell = self.tableView.dequeueReusableCellWithIdentifier("subredditCell") as! SubredditCell
+        let cell:SubredditCell = self.tableView.dequeueReusableCellWithIdentifier("subredditCell") as! SubredditCell
         cell.subredditNameLabel?.text = self.subreddits[indexPath.row].0
         return cell
     }
@@ -117,7 +116,7 @@ class ProfileViewController: UIViewController, RedditAPIRequestDelegate, UITable
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSubredditSegue" {
             if let subredditVC = segue.destinationViewController as? SubredditViewController {
-                let row = self.tableView!.indexPathForSelectedRow()!.row
+                let row = self.tableView!.indexPathForSelectedRow!.row
                 let subredditTitle = subreddits[row].0
                 subredditVC.subredditTitle = subredditTitle
                 subredditVC.subredditName = subreddits[row].1

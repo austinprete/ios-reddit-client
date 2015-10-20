@@ -27,7 +27,7 @@ class PostViewController: UIViewController, RedditAPIRequestDelegate {
     }
     
     func loadPostDetails() {
-        var urlString = "https://oauth.reddit.com/by_id/" + postID
+        let urlString = "https://oauth.reddit.com/by_id/" + postID
         let redditRequest = RedditAPIRequest()
         redditRequest.sendRedditAPIRequest(urlString, authCode: authCode, params: [ : ], delegate: self)
         
@@ -37,8 +37,7 @@ class PostViewController: UIViewController, RedditAPIRequestDelegate {
         if error != nil {
             return
         }
-        var err: NSError?
-        var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+        let jsonResult = (try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
         if let rootDict = jsonResult["data"] as? NSDictionary {
             if let postsArray = rootDict["children"] as? NSArray {
                 for post in postsArray {
@@ -47,8 +46,8 @@ class PostViewController: UIViewController, RedditAPIRequestDelegate {
                     dispatch_async(dispatch_get_main_queue(), {
                         self.postTitleLabel.text! = data["title"] as! String
                         self.postAuthorLabel.text! = data["author"] as! String
-                        var upvotes = data["ups"] as! Int
-                        var downvotes = data["downs"] as! Int
+                        let upvotes = data["ups"] as! Int
+                        let downvotes = data["downs"] as! Int
                         self.postKarmaLabel.text! = "Up: \(upvotes) | Down: \(downvotes)"
                         self.selfTextView.text = data["selftext"] as! String
                         self.selfTextView.editable = false

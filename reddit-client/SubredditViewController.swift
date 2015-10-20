@@ -33,7 +33,7 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func loadSubredditPosts() {
-        var urlString = "https://oauth.reddit.com/r/" + subredditName + "/hot"
+        let urlString = "https://oauth.reddit.com/r/" + subredditName + "/hot"
         let redditRequest = RedditAPIRequest()
         redditRequest.sendRedditAPIRequest(urlString, authCode: authCode, params: [ : ], delegate: self)
     }
@@ -49,7 +49,7 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var postCell = self.tableView.dequeueReusableCellWithIdentifier("postCell") as! PostCell
+        let postCell = self.tableView.dequeueReusableCellWithIdentifier("postCell") as! PostCell
         postCell.postTitleLabel?.text = self.subredditPosts[indexPath.row].title
         let upvotes = self.subredditPosts[indexPath.row].upvotes
         let downvotes = self.subredditPosts[indexPath.row].downvotes
@@ -63,8 +63,7 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
         if error != nil {
             return
         }
-        var err: NSError?
-        var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+        let jsonResult = (try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
 //        println(jsonResult)
         if let rootDict = jsonResult["data"] as? NSDictionary {
             if let postsArray = rootDict["children"] as? NSArray {
@@ -86,13 +85,13 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     @IBAction func handleShowFullTextTapped(sender: AnyObject) {
-        var navBarHeight = self.navigationController!.navigationBar.frame.height
+        let navBarHeight = self.navigationController!.navigationBar.frame.height
         var overlay : UIScrollView? // This should be a class variable
         
         overlay = UIScrollView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight + 10), size: CGSize(width: self.view.frame.width, height: self.view.frame.height - navBarHeight - 10)))
         overlay!.backgroundColor = UIColor.darkGrayColor()
         overlay!.alpha = 0.98
-        var overlay_label = UILabel(frame: CGRect(origin: CGPoint(x: 10, y: 10), size: CGSize(width: self.view.frame.width - 10, height: 30)))
+        let overlay_label = UILabel(frame: CGRect(origin: CGPoint(x: 10, y: 10), size: CGSize(width: self.view.frame.width - 10, height: 30)))
         overlay_label.numberOfLines = 0
         overlay_label.text = self.subredditDescription
         overlay_label.sizeToFit()
@@ -108,11 +107,15 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowPostDetails" {
             if let postVC = segue.destinationViewController as? PostViewController {
-                let row = self.tableView!.indexPathForSelectedRow()!.row
+                let row = self.tableView!.indexPathForSelectedRow!.row
                 postVC.authCode = self.authCode
                 postVC.postID = self.subredditPosts[row].id
             }
         }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        self.subredditPosts = []
     }
 
     /*
