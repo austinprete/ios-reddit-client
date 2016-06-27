@@ -117,6 +117,11 @@ class SubredditViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidDisappear(animated: Bool) {
         self.subredditPosts = []
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        loadSubredditPosts()
+        self.tableView.reloadData()
+    }
 
     /*
     // MARK: - Navigation
